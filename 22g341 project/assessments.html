@@ -1,0 +1,734 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Take our comprehensive career assessment quiz to discover your ideal career path">
+    <title>Career Assessment Quiz - MyDreamway</title>
+    <link rel="stylesheet" href="home.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        /* Assessment-specific styles */
+        .assessment-container {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 2rem;
+            background-color: #fff;
+            border-radius: 10px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        }
+        
+        .progress-bar {
+            width: 100%;
+            height: 10px;
+            background-color: #e0e0e0;
+            border-radius: 5px;
+            margin-bottom: 2rem;
+            overflow: hidden;
+        }
+        
+        .progress {
+            height: 100%;
+            background-color: #4CAF50;
+            width: 0;
+            transition: width 0.5s ease;
+        }
+        
+        .assessment-intro {
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+        
+        .question-container {
+            display: none;
+            margin-bottom: 2rem;
+        }
+        
+        .question-container.active {
+            display: block;
+            animation: fadeIn 0.5s;
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+        
+        .question {
+            font-size: 1.2rem;
+            margin-bottom: 1rem;
+            font-weight: 500;
+        }
+        
+        .options {
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+        }
+        
+        .option {
+            padding: 1rem;
+            background-color: #f5f5f5;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        .option:hover {
+            background-color: #e0e0e0;
+        }
+        
+        .option.selected {
+            background-color: #4CAF50;
+            color: white;
+        }
+        
+        .navigation-buttons {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 2rem;
+        }
+        
+        .navigation-buttons button {
+            padding: 0.8rem 1.5rem;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-weight: 500;
+            transition: all 0.3s ease;
+        }
+        
+        .btn-prev {
+            background-color: #f5f5f5;
+            color: #333;
+        }
+        
+        .btn-next, .btn-submit {
+            background-color: #4CAF50;
+            color: white;
+        }
+        
+        .btn-prev:hover {
+            background-color: #e0e0e0;
+        }
+        
+        .btn-next:hover, .btn-submit:hover {
+            background-color: #45a049;
+        }
+        
+        .result-container {
+            display: none;
+            text-align: center;
+        }
+        
+        .result-heading {
+            margin-bottom: 1rem;
+            color: #4CAF50;
+        }
+        
+        .career-matches {
+            margin-top: 2rem;
+        }
+        
+        .career-match {
+            display: flex;
+            align-items: center;
+            margin-bottom: 1rem;
+            padding: 1rem;
+            background-color: #f5f5f5;
+            border-radius: 5px;
+            text-align: left;
+        }
+        
+        .career-icon {
+            font-size: 2rem;
+            margin-right: 1rem;
+            color: #4CAF50;
+        }
+        
+        .career-details h4 {
+            margin-bottom: 0.5rem;
+        }
+        
+        .match-percentage {
+            font-weight: bold;
+            color: #4CAF50;
+        }
+        
+        .assessment-types {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 1.5rem;
+            margin: 2rem 0;
+        }
+        
+        .assessment-type {
+            flex: 1 0 300px;
+            padding: 1.5rem;
+            background-color: #f5f5f5;
+            border-radius: 10px;
+            text-align: center;
+            transition: all 0.3s ease;
+        }
+        
+        .assessment-type:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 15px rgba(0,0,0,0.1);
+        }
+        
+        .assessment-type i {
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+            color: #4CAF50;
+        }
+    </style>
+</head>
+
+<body>
+    <!-- Header -->
+    <header class="header">
+        <div class="container">
+            <div class="header-content">
+                <div class="logo">
+                    <a href="index.html">
+                        <i class="fas fa-compass"></i>
+                        <h1>MyDreamway</h1>
+                    </a>
+                </div>
+                <nav>
+                    <a href="index.html">Home</a>
+                    <a href="career-paths.html">Career Paths</a>
+                    <a href="assessments.html" class="active">Assessments</a>
+                    <a href="resources.html">Resources</a>
+                    <div class="auth-buttons">
+                        <a href="login.html">Login</a>
+                        <a href="signup.html" class="signup">Sign Up</a>
+                    </div>
+                </nav>
+            </div>
+        </div>
+    </header>
+
+    <!-- Assessment Hero Section -->
+    <section class="hero">
+        <div class="container">
+            <div class="hero-content">
+                <h2>Discover Your Career Path</h2>
+                <p>Take our comprehensive assessment to find career options that match your personality, skills, and interests.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Assessment Types -->
+    <section class="features">
+        <div class="container">
+            <div class="section-title">
+                <h3>Our Career Assessments</h3>
+                <p>Select the assessment that best suits your needs</p>
+            </div>
+            <div class="assessment-types">
+                <div class="assessment-type" id="personality-assessment">
+                    <i class="fas fa-user"></i>
+                    <h4>Personality Assessment</h4>
+                    <p>Discover career paths that align with your personality traits, values, and work preferences.</p>
+                    <a href="#quiz-section" class="home-btn">Start Now</a>
+                </div>
+                <div class="assessment-type" id="skills-assessment">
+                    <i class="fas fa-tools"></i>
+                    <h4>Skills Assessment</h4>
+                    <p>Identify your strongest skills and find careers where these skills are highly valued.</p>
+                    <a href="#quiz-section" class="home-btn">Start Now</a>
+                </div>
+                <div class="assessment-type" id="interest-assessment">
+                    <i class="fas fa-star"></i>
+                    <h4>Interest Assessment</h4>
+                    <p>Explore careers based on your interests, hobbies, and passions.</p>
+                    <a href="#quiz-section" class="home-btn">Start Now</a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Quiz Section -->
+    <section id="quiz-section" class="features">
+        <div class="container">
+            <div class="assessment-container">
+                <div class="assessment-intro">
+                    <h3>Career Personality Assessment</h3>
+                    <p>Answer the following questions honestly to get personalized career recommendations.</p>
+                    <p>This assessment takes approximately 10-15 minutes to complete.</p>
+                </div>
+                
+                <div class="progress-bar">
+                    <div class="progress" id="progress-bar"></div>
+                </div>
+                
+                <!-- Question 1 -->
+                <div class="question-container active" data-question="1">
+                    <div class="question">1. How do you prefer to solve problems?</div>
+                    <div class="options">
+                        <div class="option" data-value="analytical">I analyze all the facts and details methodically</div>
+                        <div class="option" data-value="creative">I use creative and innovative approaches</div>
+                        <div class="option" data-value="practical">I rely on practical, hands-on solutions</div>
+                        <div class="option" data-value="collaborative">I discuss with others to find the best solution</div>
+                    </div>
+                </div>
+                
+                <!-- Question 2 -->
+                <div class="question-container" data-question="2">
+                    <div class="question">2. What type of work environment do you prefer?</div>
+                    <div class="options">
+                        <div class="option" data-value="structured">A structured environment with clear guidelines</div>
+                        <div class="option" data-value="flexible">A flexible environment that allows for creativity</div>
+                        <div class="option" data-value="outdoor">An environment where I can work outdoors or be active</div>
+                        <div class="option" data-value="collaborative">A collaborative environment with teamwork</div>
+                    </div>
+                </div>
+                
+                <!-- Question 3 -->
+                <div class="question-container" data-question="3">
+                    <div class="question">3. Which of these activities would you enjoy most in your spare time?</div>
+                    <div class="options">
+                        <div class="option" data-value="technical">Building or fixing things</div>
+                        <div class="option" data-value="creative">Creating art or writing</div>
+                        <div class="option" data-value="helping">Volunteering or helping others</div>
+                        <div class="option" data-value="analytical">Researching topics or solving puzzles</div>
+                    </div>
+                </div>
+                
+                <!-- Question 4 -->
+                <div class="question-container" data-question="4">
+                    <div class="question">4. How do you prefer to communicate with others?</div>
+                    <div class="options">
+                        <div class="option" data-value="direct">Directly and to the point</div>
+                        <div class="option" data-value="diplomatic">Diplomatically, considering others' feelings</div>
+                        <div class="option" data-value="expressive">Expressively, with enthusiasm</div>
+                        <div class="option" data-value="minimal">Minimally, preferring written communication</div>
+                    </div>
+                </div>
+                
+                <!-- Question 5 -->
+                <div class="question-container" data-question="5">
+                    <div class="question">5. What motivates you most in your work?</div>
+                    <div class="options">
+                        <div class="option" data-value="achievement">Achieving goals and recognition</div>
+                        <div class="option" data-value="helping">Helping others and making a difference</div>
+                        <div class="option" data-value="learning">Learning new things and personal growth</div>
+                        <div class="option" data-value="financial">Financial security and stability</div>
+                    </div>
+                </div>
+                
+                <!-- Question 6 -->
+                <div class="question-container" data-question="6">
+                    <div class="question">6. How do you handle stress and pressure?</div>
+                    <div class="options">
+                        <div class="option" data-value="planning">By carefully planning and organizing</div>
+                        <div class="option" data-value="adaptable">By being adaptable and going with the flow</div>
+                        <div class="option" data-value="support">By seeking support from others</div>
+                        <div class="option" data-value="action">By taking immediate action to solve problems</div>
+                    </div>
+                </div>
+                
+                <!-- Question 7 -->
+                <div class="question-container" data-question="7">
+                    <div class="question">7. What type of tasks do you prefer?</div>
+                    <div class="options">
+                        <div class="option" data-value="variety">Variety and changing tasks</div>
+                        <div class="option" data-value="routine">Routine and predictable tasks</div>
+                        <div class="option" data-value="creative">Creative and innovative tasks</div>
+                        <div class="option" data-value="analytical">Analytical and problem-solving tasks</div>
+                    </div>
+                </div>
+                
+                <!-- Question 8 -->
+                <div class="question-container" data-question="8">
+                    <div class="question">8. How do you make important decisions?</div>
+                    <div class="options">
+                        <div class="option" data-value="logical">Based on logical analysis and facts</div>
+                        <div class="option" data-value="values">Based on personal values and principles</div>
+                        <div class="option" data-value="intuition">Based on intuition and gut feeling</div>
+                        <div class="option" data-value="consultation">After consulting with others</div>
+                    </div>
+                </div>
+                
+                <!-- Question 9 -->
+                <div class="question-container" data-question="9">
+                    <div class="question">9. What leadership style do you prefer or exhibit?</div>
+                    <div class="options">
+                        <div class="option" data-value="directive">Directive and decisive</div>
+                        <div class="option" data-value="democratic">Democratic and participative</div>
+                        <div class="option" data-value="visionary">Visionary and inspiring</div>
+                        <div class="option" data-value="supportive">Supportive and mentoring</div>
+                    </div>
+                </div>
+                
+                <!-- Question 10 -->
+                <div class="question-container" data-question="10">
+                    <div class="question">10. What are your career advancement goals?</div>
+                    <div class="options">
+                        <div class="option" data-value="leadership">Leadership and management positions</div>
+                        <div class="option" data-value="expertise">Becoming an expert in my field</div>
+                        <div class="option" data-value="entrepreneurship">Starting my own business</div>
+                        <div class="option" data-value="balance">Work-life balance and stability</div>
+                    </div>
+                </div>
+                
+                <div class="navigation-buttons">
+                    <button class="btn-prev" id="prev-button" disabled>Previous</button>
+                    <button class="btn-next" id="next-button">Next</button>
+                    <button class="btn-submit" id="submit-button" style="display: none;">Submit</button>
+                </div>
+                
+                <!-- Results Container -->
+                <div class="result-container" id="result-container">
+                    <h3 class="result-heading">Your Career Assessment Results</h3>
+                    <p>Based on your responses, here are your top career matches:</p>
+                    
+                    <div class="career-matches" id="career-matches">
+                        <!-- Results will be dynamically inserted here -->
+                    </div>
+                    
+                    <div class="navigation-buttons">
+                        <a href="career-paths.html" class="home-btn">Explore Career Paths</a>
+                        <a href="#" class="home-btn" id="save-results">Save Results</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-column">
+                    <h4>MyDreamway</h4>
+                    <p>Your trusted partner in career development and professional growth.</p>
+                    <div class="social-links">
+                        <a href="https://facebook.com/mydreamway" target="_blank"><i class="fab fa-facebook-f"></i></a>
+                        <a href="https://twitter.com/mydreamway" target="_blank"><i class="fab fa-twitter"></i></a>
+                        <a href="https://linkedin.com/company/mydreamway" target="_blank"><i class="fab fa-linkedin-in"></i></a>
+                        <a href="https://instagram.com/mydreamway" target="_blank"><i class="fab fa-instagram"></i></a>
+                    </div>
+                </div>
+                <div class="footer-column">
+                    <h4>Quick Links</h4>
+                    <ul>
+                        <li><a href="index.html">Home</a></li>
+                        <li><a href="about-us.html">About Us</a></li>
+                        <li><a href="services.html">Services</a></li>
+                        <li><a href="career-paths.html">Career Paths</a></li>
+                        <li><a href="contact-us.html">Contact Us</a></li>
+                    </ul>
+                </div>
+                <div class="footer-column">
+                    <h4>Resources</h4>
+                    <ul>
+                        <li><a href="blog.html">Career Blog</a></li>
+                        <li><a href="industry-reports.html">Industry Reports</a></li>
+                        <li><a href="resume-templates.html">Resume Templates</a></li>
+                        <li><a href="interview-tips.html">Interview Tips</a></li>
+                        <li><a href="skill-development.html">Skill Development</a></li>
+                    </ul>
+                </div>
+                <div class="footer-column">
+                    <h4>Newsletter</h4>
+                    <p>Subscribe to receive career tips and opportunities</p>
+                    <div class="newsletter">
+                        <form action="subscribe.php" method="post">
+                            <input type="email" name="email" placeholder="Your email address" required>
+                            <button type="submit"><i class="fas fa-paper-plane"></i></button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2025 MyDreamway. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const questionContainers = document.querySelectorAll('.question-container');
+            const progressBar = document.getElementById('progress-bar');
+            const prevButton = document.getElementById('prev-button');
+            const nextButton = document.getElementById('next-button');
+            const submitButton = document.getElementById('submit-button');
+            const resultContainer = document.getElementById('result-container');
+            const careerMatches = document.getElementById('career-matches');
+            
+            let currentQuestion = 1;
+            const totalQuestions = questionContainers.length;
+            const userAnswers = {};
+            
+            // Update progress bar
+            function updateProgressBar() {
+                const progress = (currentQuestion / totalQuestions) * 100;
+                progressBar.style.width = `${progress}%`;
+            }
+            
+            // Show current question
+            function showQuestion(questionNumber) {
+                questionContainers.forEach(container => {
+                    container.classList.remove('active');
+                });
+                
+                document.querySelector(`[data-question="${questionNumber}"]`).classList.add('active');
+                
+                // Update buttons
+                prevButton.disabled = questionNumber === 1;
+                
+                if (questionNumber === totalQuestions) {
+                    nextButton.style.display = 'none';
+                    submitButton.style.display = 'block';
+                } else {
+                    nextButton.style.display = 'block';
+                    submitButton.style.display = 'none';
+                }
+                
+                updateProgressBar();
+            }
+            
+            // Handle option selection
+            document.querySelectorAll('.option').forEach(option => {
+                option.addEventListener('click', function() {
+                    const questionContainer = this.closest('.question-container');
+                    const questionNumber = questionContainer.dataset.question;
+                    const optionValue = this.dataset.value;
+                    
+                    // Remove previous selection
+                    questionContainer.querySelectorAll('.option').forEach(opt => {
+                        opt.classList.remove('selected');
+                    });
+                    
+                    // Add selection
+                    this.classList.add('selected');
+                    
+                    // Save answer
+                    userAnswers[questionNumber] = optionValue;
+                });
+            });
+            
+            // Previous button click
+            prevButton.addEventListener('click', function() {
+                if (currentQuestion > 1) {
+                    currentQuestion--;
+                    showQuestion(currentQuestion);
+                }
+            });
+            
+            // Next button click
+            nextButton.addEventListener('click', function() {
+                const currentQuestionContainer = document.querySelector(`[data-question="${currentQuestion}"]`);
+                const selectedOption = currentQuestionContainer.querySelector('.option.selected');
+                
+                if (!selectedOption) {
+                    alert('Please select an option before proceeding.');
+                    return;
+                }
+                
+                if (currentQuestion < totalQuestions) {
+                    currentQuestion++;
+                    showQuestion(currentQuestion);
+                }
+            });
+            
+            // Submit button click
+            submitButton.addEventListener('click', function() {
+                const currentQuestionContainer = document.querySelector(`[data-question="${currentQuestion}"]`);
+                const selectedOption = currentQuestionContainer.querySelector('.option.selected');
+                
+                if (!selectedOption) {
+                    alert('Please select an option before submitting.');
+                    return;
+                }
+                
+                // Process results
+                const results = processResults(userAnswers);
+                displayResults(results);
+                
+                // Hide quiz, show results
+                document.querySelector('.assessment-intro').style.display = 'none';
+                document.querySelector('.progress-bar').style.display = 'none';
+                document.querySelector('.question-container.active').style.display = 'none';
+                document.querySelector('.navigation-buttons').style.display = 'none';
+                resultContainer.style.display = 'block';
+            });
+            
+            // Process results function
+            function processResults(answers) {
+                // This is a simplified matching algorithm
+                const profiles = {
+                    technical: {
+                        title: 'Technical Careers',
+                        description: 'You have a strong aptitude for analytical thinking and problem-solving.',
+                        careers: [
+                            { title: 'Software Developer', match: 92, icon: 'fas fa-laptop-code' },
+                            { title: 'Data Scientist', match: 88, icon: 'fas fa-chart-line' },
+                            { title: 'Network Administrator', match: 85, icon: 'fas fa-network-wired' }
+                        ]
+                    },
+                    creative: {
+                        title: 'Creative Careers',
+                        description: 'You have a strong creative mindset and enjoy innovative approaches.',
+                        careers: [
+                            { title: 'Graphic Designer', match: 94, icon: 'fas fa-palette' },
+                            { title: 'Marketing Specialist', match: 89, icon: 'fas fa-ad' },
+                            { title: 'Content Creator', match: 87, icon: 'fas fa-pencil-alt' }
+                        ]
+                    },
+                    helping: {
+                        title: 'Helping Careers',
+                        description: 'You have a strong desire to help others and make a positive impact.',
+                        careers: [
+                            { title: 'Healthcare Professional', match: 95, icon: 'fas fa-user-md' },
+                            { title: 'Teacher/Educator', match: 90, icon: 'fas fa-chalkboard-teacher' },
+                            { title: 'Social Worker', match: 88, icon: 'fas fa-hands-helping' }
+                        ]
+                    },
+                    analytical: {
+                        title: 'Analytical Careers',
+                        description: 'You have a strong aptitude for logical analysis and strategic thinking.',
+                        careers: [
+                            { title: 'Financial Analyst', match: 93, icon: 'fas fa-chart-pie' },
+                            { title: 'Research Scientist', match: 91, icon: 'fas fa-microscope' },
+                            { title: 'Business Analyst', match: 87, icon: 'fas fa-briefcase' }
+                        ]
+                    },
+                    leadership: {
+                        title: 'Leadership Careers',
+                        description: 'You have strong leadership qualities and enjoy guiding others.',
+                        careers: [
+                            { title: 'Project Manager', match: 94, icon: 'fas fa-tasks' },
+                            { title: 'Business Executive', match: 92, icon: 'fas fa-user-tie' },
+                            { title: 'Entrepreneur', match: 90, icon: 'fas fa-rocket' }
+                        ]
+                    }
+                };
+                
+                // Simple algorithm to determine career path
+                let scores = {
+                    technical: 0,
+                    creative: 0,
+                    helping: 0,
+                    analytical: 0,
+                    leadership: 0
+                };
+                
+                // Question-specific scoring
+                if (answers['1'] === 'analytical') scores.analytical += 2;
+                if (answers['1'] === 'creative') scores.creative += 2;
+                if (answers['1'] === 'practical') scores.technical += 2;
+                if (answers['1'] === 'collaborative') scores.helping += 2;
+                
+                if (answers['2'] === 'structured') scores.analytical += 2;
+                if (answers['2'] === 'flexible') scores.creative += 2;
+                if (answers['2'] === 'outdoor') scores.technical += 1;
+                if (answers['2'] === 'collaborative') scores.helping += 2;
+                
+                if (answers['3'] === 'technical') scores.technical += 3;
+                if (answers['3'] === 'creative') scores.creative += 3;
+                if (answers['3'] === 'helping') scores.helping += 3;
+                if (answers['3'] === 'analytical') scores.analytical += 3;
+                
+                if (answers['4'] === 'direct') scores.leadership += 2;
+                if (answers['4'] === 'diplomatic') scores.helping += 2;
+                if (answers['4'] === 'expressive') scores.creative += 2;
+                if (answers['4'] === 'minimal') scores.technical += 1;
+                
+                if (answers['5'] === 'achievement') scores.leadership += 3;
+                if (answers['5'] === 'helping') scores.helping += 3;
+                if (answers['5'] === 'learning') scores.analytical += 2;
+                if (answers['5'] === 'financial') scores.technical += 1;
+                
+                if (answers['7'] === 'variety') scores.creative += 2;
+                if (answers['7'] === 'routine') scores.technical += 2;
+                if (answers['7'] === 'creative') scores.creative += 3;
+                if (answers['7'] === 'analytical') scores.analytical += 3;
+                
+                if (answers['8'] === 'logical') scores.analytical += 3;
+                if (answers['8'] === 'values') scores.helping += 2;
+                if (answers['8'] === 'intuition') scores.creative += 2;
+                if (answers['8'] === 'consultation') scores.helping += 1;
+                
+                if (answers['9'] === 'directive') scores.leadership += 3;
+                if (answers['9'] === 'democratic') scores.helping += 2;
+                if (answers['9'] === 'visionary') scores.creative += 2;
+                if (answers['9'] === 'supportive') scores.helping += 3;
+                
+                if (answers['10'] === 'leadership') scores.leadership += 3;
+                if (answers['10'] === 'expertise') scores.analytical += 2;
+                if (answers['10'] === 'entrepreneurship') scores.leadership += 2;
+                if (answers['10'] === 'balance') scores.helping += 1;
+                
+                // Find top career path
+                let topCareer = Object.keys(scores).reduce((a, b) => scores[a] > scores[b] ? a : b);
+                
+                return profiles[topCareer];
+            }
+            
+            // Display results function
+            function displayResults(results) {
+                const resultHTML = `
+                    <h4>${results.title}</h4>
+                    <p>${results.description}</p>
+                    <div class="career-matches">
+                        ${results.careers.map(career => `
+                            <div class="career-match">
+                                <div class="career-icon">
+                                    <i class="${career.icon}"></i>
+                                </div>
+                                <div class="career-details">
+                                    <h4>${career.title}</h4>
+                                    <p><span class="match-percentage">${career.match}% Match</span> - Click to learn more about this career path.</p>
+                                </div>
+                            </div>
+                        `).join('')}
+                    </div>
+                `;
+                
+                careerMatches.innerHTML = resultHTML;
+                
+                // Make career matches clickable
+                document.querySelectorAll('.career-match').forEach(match => {
+                    match.style.cursor = 'pointer';
+                    match.addEventListener('click', function() {
+                        const careerTitle = this.querySelector('h4').textContent;
+                        window.location.href = `career-detail.html?career=${encodeURIComponent(careerTitle)}`;
+                    });
+                });
+            }
+            
+            // Start the quiz
+            showQuestion(1);
+            
+            // Assessment type selection
+            document.querySelectorAll('.assessment-type a').forEach(link => {
+                link.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    const assessmentType = this.closest('.assessment-type').id;
+                    document.querySelector('.assessment-intro h3').textContent = 
+                        assessmentType === 'personality-assessment' ? 'Career Personality Assessment' :
+                        assessmentType === 'skills-assessment' ? 'Career Skills Assessment' : 
+                        'Career Interest Assessment';
+                    
+                    document.querySelector('#quiz-section').scrollIntoView({ behavior: 'smooth' });
+                });
+            });
+            
+            // Save results button
+            document.getElementById('save-results').addEventListener('click', function(e) {
+                e.preventDefault();
+                if (!document.querySelector('.auth-buttons a').textContent.includes('Logout')) {
+                    alert('Please log in or create an account to save your results.');
+                    window.location.href = 'login.html';
+                } else {
+                    alert('Your results have been saved to your profile!');
+                }
+            });
+        });
+    </script>
+</body>
+</html>
